@@ -1,0 +1,119 @@
+@layer components {
+  .language-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    flex-shrink: 0;
+  }
+  .language-switcher button {
+    color: #b7baaf;
+    background: none;
+    border: 0;
+    border-bottom: 1px solid transparent;
+    font-size: 11px;
+    padding: 12px 5px;
+    min-width: 24px;
+    min-height: 44px;
+  }
+  .language-switcher button[aria-pressed='true'] {
+    color: #eed0b9;
+    border-bottom-color: #bf8661;
+  }
+  .language-switcher > span {
+    color: #84897b;
+    font-size: 9px;
+  }
+  .header-actions {
+    gap: 18px;
+  }
+  .mobile-logout {
+    background: none;
+    border: 0;
+    color: inherit;
+    text-align: left;
+    font: inherit;
+    padding: 0;
+  }
+  html[lang='pl'] .hero h1 {
+    font-size: clamp(60px, 5.65vw, 95px);
+  }
+  html[lang='pl'] .hero-description {
+    max-width: 410px;
+  }
+  html[lang='pl'] .ritual-strip {
+    font-size: 20px;
+  }
+}
+@layer responsive {
+  @media (max-width: 1050px) {
+    .main-nav {
+      gap: 18px;
+      font-size: 11px;
+    }
+    .site-header {
+      gap: 15px;
+    }
+    .header-actions {
+      gap: 12px;
+    }
+  }
+  @media (max-width: 760px) {
+    .header-actions {
+      gap: 9px;
+    }
+    .language-switcher {
+      gap: 1px;
+    }
+    .language-switcher button {
+      padding: 12px 4px;
+      font-size: 11px;
+    }
+    .header-actions .logout-link {
+      display: none;
+    }
+    html[lang='pl'] .hero h1 {
+      font-size: clamp(54px, 10.7vw, 80px);
+    }
+    html[lang='pl'] .hero-copy > .eyebrow {
+      letter-spacing: 0.06em;
+      font-size: 9px;
+    }
+    html[lang='pl'] .hero-description {
+      max-width: 345px;
+    }
+    html[lang='pl'] .ritual-strip {
+      font-size: 14px;
+    }
+    html[lang='pl'] .barber-title h3 {
+      font-size: 23px;
+    }
+    html[lang='pl'] .booking-steps li {
+      font-size: 8px;
+    }
+  }
+  @media (max-width: 360px) {
+    .hero h1 {
+      font-size: 60px;
+    }
+    .hero h1 span {
+      display: block;
+    }
+    .header-actions {
+      gap: 5px;
+    }
+    .language-switcher button {
+      font-size: 10px;
+      padding: 12px 3px;
+    }
+    html[lang='pl'] .header-actions .button {
+      font-size: 9px;
+    }
+    .header-actions .button svg {
+      display: none;
+    }
+    .header-actions .button {
+      white-space: nowrap;
+      padding: 12px 8px;
+    }
+  }
+}

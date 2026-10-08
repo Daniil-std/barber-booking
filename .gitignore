@@ -1,0 +1,45 @@
+# Local credentials; publish only placeholder examples.
+.env
+.env.*
+!.env.example
+
+# Python environments, bytecode and caches.
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# JavaScript dependencies and generated output.
+node_modules/
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# Django runtime data.
+staticfiles/
+media/
+*.sqlite3
+
+# Local tools, database data, logs and review artifacts.
+.local/
+.tools/
+test-results/
+*.log
+/barber-booking*.zip
+
+# Editor and operating system files.
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
