@@ -1,17 +1,15 @@
-# Deployment template only. These plans incur charges; review in Render before applying.
+# Free demo deployment. Review Render's Free tier limits before creating resources.
 services:
   - type: web
     name: barber-booking-web
     runtime: docker
     region: frankfurt
-    plan: 0.5c-512mb
+    plan: free
     branch: main
     dockerfilePath: ./Dockerfile
     dockerContext: .
     healthCheckPath: /api/health/
     autoDeployTrigger: "off"
-    preDeployCommand: python manage.py migrate --noinput
-    initialDeployHook: python manage.py seed_demo
     envVars:
       - key: DJANGO_SECRET_KEY
         generateValue: true
@@ -22,6 +20,10 @@ services:
       - key: DJANGO_TRUST_PROXY
         value: "True"
       - key: DATABASE_SSL_REQUIRE
+        value: "True"
+      # start.py runs this idempotent command after every successful migration.
+      # Set to "False" after the first deploy to stop refreshing demo catalog data.
+      - key: SEED_DEMO_DATA
         value: "True"
       - key: DJANGO_ALLOWED_HOSTS
         value: "127.0.0.1,localhost"
@@ -34,7 +36,7 @@ services:
 databases:
   - name: barber-booking-db
     region: frankfurt
-    plan: 0.1c-256mb
+    plan: free
     diskSizeGB: 1
     postgresMajorVersion: "17"
     databaseName: barber_booking

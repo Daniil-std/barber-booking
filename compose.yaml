@@ -36,7 +36,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    command: ["sh", "-c", "python manage.py migrate --noinput && exec gunicorn --config gunicorn.conf.py config.wsgi:application"]
 
 volumes:
   postgres_data:
