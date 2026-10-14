@@ -37,7 +37,6 @@ databases:
   - name: barber-booking-db
     region: frankfurt
     plan: free
-    diskSizeGB: 1
     postgresMajorVersion: "17"
     databaseName: barber_booking
     user: barber_booking
