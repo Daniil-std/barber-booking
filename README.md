@@ -47,8 +47,6 @@ Open **http://127.0.0.1:8080**. Admin is at `/admin/`.
 
 The helper preserves an existing `.env`. The seed adds fictional services, staff and schedules. Database data stays in a Docker volume. Use fictional details when trying registration and booking.
 
-For Render deployment, see [DEPLOYMENT.md](docs/DEPLOYMENT.md). API routes are in [API.md](docs/API.md).
-
 ## Tests
 
 Last local run: 44 backend tests and 7 frontend tests passed. With Compose running:
