@@ -85,6 +85,11 @@ export function Auth({
         </button>
       </div>
       <ErrorNotice error={error} />
+      {mode === 'register' && (
+        <p className="small-note">
+          {t('Public demo — please use fictional contact details.')}
+        </p>
+      )}
       <form onSubmit={submit} className="auth-form">
         {mode === 'register' && (
           <Field

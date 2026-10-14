@@ -43,6 +43,9 @@ export function DetailsStep({
             )}
           </p>
           <form className="contact-form" onSubmit={onSubmit}>
+            <p className="small-note">
+              {t('Public demo — please use fictional contact details.')}
+            </p>
             <Field
               label={t('Your name')}
               name="contact_name"

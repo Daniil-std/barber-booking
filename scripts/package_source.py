@@ -4,8 +4,8 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT = ROOT / "barber-booking-source.zip"
-ROOT_FILES = (".editorconfig", ".gitignore", ".dockerignore", "README.md", "compose.yaml")
-SOURCE_DIRS = ("backend", "frontend", "docs", "scripts")
+ROOT_FILES = (".editorconfig", ".gitignore", ".dockerignore", "README.md", "compose.yaml", "Dockerfile", "render.yaml")
+SOURCE_DIRS = (".github", "backend", "frontend", "docs", "scripts")
 EXCLUDED_DIRS = {".git", ".venv", "venv", "node_modules", "__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache", "coverage", "htmlcov", "dist", "build", "staticfiles", "media", ".local", ".tools", ".vscode", ".idea", "test-results"}
 EXCLUDED_FILES = {".DS_Store", "Thumbs.db", "Desktop.ini"}
 EXCLUDED_SUFFIXES = {".pyc", ".pyo", ".log", ".zip", ".sqlite3", ".tsbuildinfo", ".swp", ".swo"}

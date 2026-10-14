@@ -1,5 +1,7 @@
 # Publication Review
 
+Historical October 8 report. Current commit, deployment preparation and screenshot status are recorded in [FINAL_DEMO_REVIEW.md](FINAL_DEMO_REVIEW.md). The legacy private ZIP and temporary audit tools mentioned below were subsequently removed during the owner's authorized size cleanup. Do not treat historical pre-commit status as current.
+
 Reviewed October 8, 2026 in the Windows workspace, then reverified after the owner initialized and staged the independent project repository. No commit, push, Git-history rewrite, or external deployment was performed.
 
 ## 1. Changes made

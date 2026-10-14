@@ -15,5 +15,28 @@ services:
       timeout: 5s
       retries: 10
 
+  web:
+    build: .
+    init: true
+    env_file:
+      - backend/.env
+    environment:
+      DJANGO_DEBUG: "False"
+      # Local HTTP only. Render uses HTTPS and secure cookies instead.
+      DJANGO_HTTPS: "False"
+      DJANGO_TRUST_PROXY: "False"
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1"
+      DJANGO_CSRF_TRUSTED_ORIGINS: "http://localhost:8080,http://127.0.0.1:8080"
+      DATABASE_URL: ""
+      POSTGRES_HOST: db
+      POSTGRES_PORT: "5432"
+      PORT: "8000"
+    ports:
+      - "127.0.0.1:8080:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["sh", "-c", "python manage.py migrate --noinput && exec gunicorn --config gunicorn.conf.py config.wsgi:application"]
+
 volumes:
   postgres_data:

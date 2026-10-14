@@ -11,6 +11,6 @@ No external deployment, payments, SMS or paid integrations are included.
 
 All four stages are implemented. The application uses the real Django API and PostgreSQL. English/Polish website localization was added during the quality stage; code, API messages, Admin and documentation remain English.
 
-Automated verification includes 30 backend tests, seven frontend tests, TypeScript checking, a production frontend build and migration/system checks. Browser review covers registration, booking, account cancellation, sign-in/out, keyboard language selection, persistent language preference and responsive layouts. No external deployment was performed.
+Current verification includes 44 backend tests, seven frontend tests, TypeScript checking, a production frontend build and migration/system checks. Real HTTP/browser checks cover registration, regular/training bookings, account cancellation, sign-in/out, localization and responsive layouts. Docker/Gunicorn/WhiteNoise, Render and CI configurations plus eight real local screenshots are prepared. External deployment, a GitHub CI run and Docker Engine startup remain pending; see FINAL_DEMO_REVIEW.md.
 
 The pricing update adds Junior/Senior/Top Barber tiers (70/100/140 PLN for the signature cut) and a 35 PLN supervised training haircut. Training reserves both staff members through database-maintained occupancy rows and exclusion constraints. Public portfolio notices and the credits page/link were removed; asset provenance remains in `docs/ASSETS.md`.

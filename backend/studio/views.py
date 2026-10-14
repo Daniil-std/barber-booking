@@ -1,11 +1,12 @@
 from django.contrib.auth import authenticate, login, logout
-from django.db import IntegrityError, transaction
+from django.db import DatabaseError, IntegrityError, connection, transaction
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.http import require_safe
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny
@@ -18,6 +19,18 @@ from .scheduling import slots_for, studio_today
 from .serializers import (AppointmentCreateSerializer, AppointmentSerializer, AvailabilitySerializer,
     BarberSerializer, LoginSerializer, RegisterSerializer, ServiceSerializer, UserSerializer)
 from .services import cancel_appointment, create_appointment
+
+
+@require_safe
+@never_cache
+def health(request):
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+            cursor.fetchone()
+    except DatabaseError:
+        return JsonResponse({"status": "unavailable"}, status=503)
+    return JsonResponse({"status": "ok"})
 
 
 def session_data(request):

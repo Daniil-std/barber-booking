@@ -1,6 +1,9 @@
 import os
+import re
 from pathlib import Path
+from urllib.parse import urlsplit
 
+import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 from dotenv import load_dotenv
 
@@ -16,12 +19,31 @@ if debug_value not in {"true", "false"}:
 DEBUG = debug_value == "true"
 
 
+def env_bool(name, default):
+    value = os.environ.get(name, str(default)).strip().lower()
+    if value not in {"true", "false"}:
+        raise ImproperlyConfigured(f"{name} must be True or False.")
+    return value == "true"
+
+
 def env_list(name, default):
     return [value.strip() for value in os.environ.get(name, default).split(",") if value.strip()]
 
 
 ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost")
 CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS", "http://127.0.0.1:5173,http://localhost:5173")
+render_hostname = os.environ.get("RENDER_EXTERNAL_HOSTNAME", "").strip()
+if render_hostname:
+    if not re.fullmatch(r"[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?", render_hostname):
+        raise ImproperlyConfigured("RENDER_EXTERNAL_HOSTNAME must be a hostname.")
+    ALLOWED_HOSTS.append(render_hostname)
+    CSRF_TRUSTED_ORIGINS.append(f"https://{render_hostname}")
+if any("*" in host or "://" in host for host in ALLOWED_HOSTS):
+    raise ImproperlyConfigured("DJANGO_ALLOWED_HOSTS requires exact hostnames.")
+for origin in CSRF_TRUSTED_ORIGINS:
+    parsed_origin = urlsplit(origin)
+    if "*" in origin or parsed_origin.scheme not in {"http", "https"} or not parsed_origin.hostname or parsed_origin.path or parsed_origin.query or parsed_origin.fragment or parsed_origin.username:
+        raise ImproperlyConfigured("DJANGO_CSRF_TRUSTED_ORIGINS requires exact HTTP(S) origins.")
 
 INSTALLED_APPS = [
     "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes",
@@ -30,6 +52,7 @@ INSTALLED_APPS = [
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -58,6 +81,15 @@ DATABASES = {"default": {
     "CONN_MAX_AGE": 60,
     "OPTIONS": {"connect_timeout": 5},
 }}
+database_url = os.environ.get("DATABASE_URL", "").strip()
+if database_url:
+    if urlsplit(database_url).scheme not in {"postgres", "postgresql"}:
+        raise ImproperlyConfigured("DATABASE_URL must use PostgreSQL.")
+    DATABASES["default"] = dj_database_url.parse(
+        database_url, conn_max_age=60, conn_health_checks=True,
+        ssl_require=env_bool("DATABASE_SSL_REQUIRE", not DEBUG),
+    )
+    DATABASES["default"].setdefault("OPTIONS", {})["connect_timeout"] = 5
 AUTH_USER_MODEL = "studio.User"
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
@@ -71,18 +103,32 @@ USE_I18N = True
 USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+FRONTEND_DIST = Path(os.environ.get("FRONTEND_DIST", BASE_DIR.parent / "frontend" / "dist"))
+WHITENOISE_ROOT = FRONTEND_DIST
+WHITENOISE_USE_FINDERS = False
+WHITENOISE_AUTOREFRESH = DEBUG
+WHITENOISE_IMMUTABLE_FILE_TEST = r"^/assets/.+-[A-Za-z0-9_-]{8,}\.[^/]+$"
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage" if DEBUG else "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+}
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_SAMESITE = "Lax"
 CSRF_FAILURE_VIEW = "studio.views.csrf_failure"
-SESSION_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_SECURE = not DEBUG
+HTTPS_ENABLED = env_bool("DJANGO_HTTPS", not DEBUG)
+SESSION_COOKIE_SECURE = HTTPS_ENABLED
+CSRF_COOKIE_SECURE = HTTPS_ENABLED
 SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_SSL_REDIRECT = not DEBUG
-SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0
-SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
-SECURE_HSTS_PRELOAD = not DEBUG
+SECURE_SSL_REDIRECT = HTTPS_ENABLED
+# Readiness checks run over HTTP inside the private container network.
+SECURE_REDIRECT_EXEMPT = [r"^api/health/$"]
+SECURE_HSTS_SECONDS = 31536000 if HTTPS_ENABLED and not DEBUG else 0
+SECURE_HSTS_INCLUDE_SUBDOMAINS = HTTPS_ENABLED and not DEBUG
+SECURE_HSTS_PRELOAD = HTTPS_ENABLED and not DEBUG
+if env_bool("DJANGO_TRUST_PROXY", bool(render_hostname)):
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 X_FRAME_OPTIONS = "DENY"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ["rest_framework.authentication.SessionAuthentication"],

@@ -25,3 +25,7 @@
 .idea
 *.zip
 **/*.log
+docs
+.github
+test-results
+**/.ruff_cache

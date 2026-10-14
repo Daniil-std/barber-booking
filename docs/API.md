@@ -2,8 +2,11 @@
 
 Base path: `/api/`. JSON requests and responses. Catalog/availability/session are public; appointment endpoints require a session. Django Admin remains at `/admin/`.
 
+Production React and the API share one origin through Django/WhiteNoise; developer mode uses Vite's same-origin proxy.
+
 | Method | Path | Behavior |
 | --- | --- | --- |
+| GET | `health/` | Public database readiness: `{"status":"ok"}`, or generic 503 on connection failure |
 | GET | `catalog/` | Active services and barbers, studio timezone, today's date and booking horizon |
 | GET | `availability/?service=1&barber=1&date=2026-10-08` | ISO timestamps for available starts, respecting full service duration |
 | GET | `auth/session/` | Current user (or null) and CSRF token |

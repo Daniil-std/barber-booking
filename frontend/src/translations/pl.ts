@@ -1,4 +1,6 @@
 export const polish: Record<string, string> = {
+  'Public demo — please use fictional contact details.':
+    'Publiczne demo — używaj fikcyjnych danych kontaktowych.',
   Junior: 'Junior',
   Senior: 'Senior',
   'Top Barber': 'Top Barber',

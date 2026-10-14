@@ -10,7 +10,23 @@ I built a full-stack appointment booking application to demonstrate how a servic
 
 The backend handles scheduling, input validation, account ownership, and historical pricing. PostgreSQL constraints and ordered transaction locks prevent overlapping reservations, including concurrent requests. Training appointments reserve both the trainee and an assigned Senior supervisor, so their availability must match for the full service duration.
 
-This is a personal portfolio demonstration using a fictional FORM Barber Studio brand and fictional staff/catalog data. It was not paid client work and is not currently deployed as a production service. No claims about real customers, revenue, or business outcomes are made.
+The same-origin deployment preparation includes Gunicorn, WhiteNoise, complete Docker Compose, a Render Blueprint and GitHub Actions configuration. This is a personal portfolio project with a fictional brand, not paid client work. Public hosting and remote CI are pending; no customers, revenue or business results are claimed.
+
+## Ready-to-paste description (120–180 words)
+
+I built a full-stack appointment booking platform to demonstrate how a service business can turn its catalog into reliable, manageable reservations. Customers choose a service, barber and available time, create an account, confirm an appointment, and manage future cancellations through an English or Polish interface that adapts to desktop and mobile screens.
+
+The Django REST API calculates availability from service duration, staff schedules, breaks, days off and existing bookings. PostgreSQL exclusion constraints, database triggers and ordered transaction locks prevent overlapping reservations, including simultaneous requests. Supervised training visits reserve both a trainee and Senior barber, while price and duration snapshots preserve appointment history after catalog updates.
+
+My work covered frontend design, API integration, authentication, validation, scheduling, testing and deployment preparation. The repository includes a Docker image definition using Gunicorn and WhiteNoise, complete Compose configuration, a Render Blueprint, CI configuration and real application screenshots. This is a personal portfolio project with a fictional studio brand; public hosting and remote CI verification are pending.
+
+## Short description (40–60 words)
+
+Personal full-stack booking platform built with Django, React and PostgreSQL. Includes bilingual booking, customer accounts, cancellations, tiered pricing and supervised training appointments. Database constraints and transaction locks prevent overlapping reservations. Docker, Gunicorn, WhiteNoise, Render and CI configurations prepare the application for deployment. Real local screenshots are included; public hosting is pending.
+
+**Skills/tags:** Python, Django, Django REST Framework, React, TypeScript, PostgreSQL, REST API, Docker, GitHub Actions, Full-Stack Development.
+
+**Links:** Add GitHub/Live Demo only after real URLs exist and are verified. Never publish placeholders.
 
 ## Problem
 
@@ -40,7 +56,7 @@ A React booking flow uses server-calculated availability and prices from a Djang
 
 ## Technology Stack
 
-React, TypeScript, Vite, Python, Django, Django REST Framework, PostgreSQL, psycopg, Docker Compose for a local database, Node's test runner, Django test cases, and Prettier.
+React, TypeScript, Vite, Python, Django, Django REST Framework, PostgreSQL, psycopg, Gunicorn, WhiteNoise, Docker, full Compose, Render Blueprint, GitHub Actions configuration, Node's test runner, Django tests and Prettier.
 
 ## My Responsibilities
 
@@ -48,8 +64,8 @@ Full-stack implementation: frontend layout and localization, booking flow and AP
 
 ## Testing
 
-The project contains API/integration tests, database concurrency tests, settings tests, and frontend translation/pricing tests. TypeScript and production-build checks also run. Current executed results and limitations are recorded in [PUBLICATION_REVIEW.md](PUBLICATION_REVIEW.md); historical browser review is in [VERIFICATION.md](VERIFICATION.md).
+44 backend tests and seven frontend tests passed, with types/build/format checks and actual HTTP registration, regular/training bookings and cancellation. Browser checks/screenshots use the actual API/PostgreSQL. Current results are in [FINAL_DEMO_REVIEW.md](FINAL_DEMO_REVIEW.md); historical checks are in [VERIFICATION.md](VERIFICATION.md).
 
 ## Possible Future Improvements
 
-Email verification and password reset, reminders, rescheduling, payment integration, a waitlist, shared-cache throttling, automated browser regression tests, CI, and production hosting. These are future work, not existing features.
+Finish remote CI/Docker verification, publish the approved GitHub repository and deploy the approved demo. This project intentionally stops there: payments, SMS, Redis, Celery and extra product features are outside its final scope. Browser CI and shared-cache throttling would require separate review if the demo were later scaled.
