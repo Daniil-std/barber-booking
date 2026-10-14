@@ -1,5 +1,7 @@
 # Screenshots
 
+Captured from the local app with fictional contact details.
+
 - [01-homepage-desktop.png](screenshots/01-homepage-desktop.png) — Homepage
 - [02-services-pricing.png](screenshots/02-services-pricing.png) — Services and pricing
 - [03-barber-selection.png](screenshots/03-barber-selection.png) — Barber selection

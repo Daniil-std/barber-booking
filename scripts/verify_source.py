@@ -1,4 +1,4 @@
-"""Redacted checks of publishable source, Git history and the source ZIP."""
+"""Scan source, Git history and the source ZIP without printing secrets."""
 from pathlib import Path
 import re
 import subprocess

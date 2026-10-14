@@ -32,7 +32,7 @@ media/
 .tools/
 test-results/
 *.log
-/barber-booking*.zip
+*.zip
 
 # Editor and operating system files.
 .vscode/

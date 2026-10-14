@@ -1,10 +1,8 @@
 # Render deployment
 
-1. Push the repository to GitHub.
-2. In Render, create a Blueprint from `render.yaml`.
-3. Review the two Free resources before applying the Blueprint.
-4. Wait for the database and web service to deploy.
-5. Open `/api/health/` on the assigned `onrender.com` URL.
+The [live demo](https://barber-booking-web.onrender.com/) runs on Render. For a new deployment, create a Blueprint from `render.yaml`, review the two Free resources, then check `/api/health/` on the assigned URL.
+
+The Blueprint disables automatic deployments (`autoDeployTrigger: "off"`). Deploy a chosen commit manually after CI passes.
 
 The container runs migrations before Gunicorn starts. A migration or seed error stops the deployment.
 
@@ -12,14 +10,16 @@ The container runs migrations before Gunicorn starts. A migration or seed error 
 
 No shell command or pre-deploy job is required.
 
+Keep `DJANGO_SECRET_KEY` and database credentials in Render environment variables. Production uses PostgreSQL with SSL, HTTPS and secure cookies. Trust forwarded headers only behind a trusted proxy. Render supplies the exact hostname; set `DJANGO_ALLOWED_HOSTS` and `DJANGO_CSRF_TRUSTED_ORIGINS` explicitly for custom domains.
+
 ## Check the deployment
 
 ```sh
-python scripts/smoke_http.py https://YOUR-SERVICE.onrender.com
-python scripts/smoke_http.py https://YOUR-SERVICE.onrender.com --exercise-bookings
+python scripts/smoke_http.py https://barber-booking-web.onrender.com/
+python scripts/smoke_http.py https://barber-booking-web.onrender.com/ --exercise-bookings
 ```
 
-Use fictional contact details with the second command.
+The second command creates a fictional account and two cancelled appointments. It leaves those records in the database.
 
 ## Free tier limits
 
@@ -28,3 +28,5 @@ Use fictional contact details with the second command.
 - Free PostgreSQL has 1 GB of storage and expires after 30 days.
 - A workspace can have one Free PostgreSQL database.
 - Free web services have no shell access or one-off jobs.
+
+Check [Render's current limits](https://render.com/docs/free) before deploying. The database expiry can make the demo unavailable.

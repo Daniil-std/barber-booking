@@ -1,4 +1,4 @@
-"""Check a real same-origin build; optional fictional booking/cancellation exercise."""
+"""Check deployed assets and API, with optional booking and cancellation checks."""
 import argparse
 from datetime import date, timedelta
 from http.cookiejar import CookieJar

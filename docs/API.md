@@ -1,5 +1,7 @@
 # API
 
+Requests use JSON and same-origin session cookies. Fetch `/api/auth/session/` first and send its `csrfToken` as `X-CSRFToken` on POST requests. Login and registration return a fresh token. Appointment endpoints and logout require authentication; each customer can access only their own appointments.
+
 | Method | Path | Purpose |
 | --- | --- | --- |
 | GET | `/api/health/` | Database readiness |

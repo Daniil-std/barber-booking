@@ -1,4 +1,3 @@
-"""Configuration regressions without reading local developer credentials."""
 import os
 import runpy
 import secrets
